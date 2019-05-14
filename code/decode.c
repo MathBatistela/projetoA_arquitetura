@@ -156,6 +156,16 @@ void decodificar(unsigned int ir) {
 					}
 					break;
 				}
+
+				case 2:	{	// SRL -- Shift right logical
+							// Syntax: srl $d, $t, h
+							// Encoding: 0000 00-- ---t tttt dddd dhhh hh00 0010
+					fprintf(stdout, "srl ");
+					fprintf(stdout, "%s, ", registerName[getRd(ir)]);
+					fprintf(stdout, "%s, ", registerName[getRt(ir)]);
+					fprintf(stdout, "%d\n", getShamt(ir));
+				}
+
 				case 32: { // 100000 -> add, R-Type.
 					fprintf(stdout, "add ");
 					fprintf(stdout, "%s, ", registerName[getRd(ir)]);
@@ -171,6 +181,34 @@ void decodificar(unsigned int ir) {
 					fprintf(stdout, "%s\n", registerName[getRt(ir)]);
 					break;
 				}
+
+				case 36: { // 100100 -> and, R-Type.
+					fprintf(stdout, "and ");
+					fprintf(stdout, "%s, ", registerName[getRd(ir)]);
+					fprintf(stdout, "%s, ", registerName[getRs(ir)]);
+					fprintf(stdout, "%s\n", registerName[getRt(ir)]);
+					break;
+				}
+
+				case 39: { // 100111 -> nor, R-Type.
+					fprintf(stdout, "nor ");
+					fprintf(stdout, "%s, ", registerName[getRd(ir)]);
+					fprintf(stdout, "%s, ", registerName[getRs(ir)]);
+					fprintf(stdout, "%s\n", registerName[getRt(ir)]);
+					break;
+				}
+
+				case 42: { // 101010 -> slt, R-Type.
+					fprintf(stdout, "slt ");
+					fprintf(stdout, "%s, ", registerName[getRd(ir)]);
+					fprintf(stdout, "%s, ", registerName[getRs(ir)]);
+					fprintf(stdout, "%s\n", registerName[getRt(ir)]);
+					break;
+				}
+
+				
+
+				
 			}
 			break;
 		}
