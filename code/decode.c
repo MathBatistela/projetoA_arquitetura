@@ -156,8 +156,24 @@ void decodificar(unsigned int ir) {
 					}
 					break;
 				}
+				case 8: { 	// JR -- Jump register, Description: Jump to the address contained in register $s 
+							// Syntax: jr $s
+							// 0000 00ss sss0 0000 0000 0000 0000 1000
+					fprintf(stdout, "jr ");
+					fprintf(stdout, "%s, ", registerName[getRs(ir)]);
+					break;
+				}
 				case 32: { // 100000 -> add, R-Type.
 					fprintf(stdout, "add ");
+					fprintf(stdout, "%s, ", registerName[getRd(ir)]);
+					fprintf(stdout, "%s, ", registerName[getRs(ir)]);
+					fprintf(stdout, "%s\n", registerName[getRt(ir)]);
+					break;
+				}
+				case 33: { 	// ADDU -- Add unsigned, Description: Adds two registers and stores the result in a register 
+							// Syntax: addu $d, $s, $t
+							// 0000 00ss ssst tttt dddd d000 0010 0001
+					fprintf(stdout, "addu ");
 					fprintf(stdout, "%s, ", registerName[getRd(ir)]);
 					fprintf(stdout, "%s, ", registerName[getRs(ir)]);
 					fprintf(stdout, "%s\n", registerName[getRt(ir)]);
@@ -166,6 +182,33 @@ void decodificar(unsigned int ir) {
 
 				case 34: { // 100010 -> sub, R-Type.
 					fprintf(stdout, "sub ");
+					fprintf(stdout, "%s, ", registerName[getRd(ir)]);
+					fprintf(stdout, "%s, ", registerName[getRs(ir)]);
+					fprintf(stdout, "%s\n", registerName[getRt(ir)]);
+					break;
+				}
+				case 35: { // SUBU -- Subtract unsigned, Description: Subtracts two registers and stores the result in a register
+							// Syntax: subu $d, $s, $t
+							// 0000 00ss ssst tttt dddd d000 0010 001
+					fprintf(stdout, "subu ");
+					fprintf(stdout, "%s, ", registerName[getRd(ir)]);
+					fprintf(stdout, "%s, ", registerName[getRs(ir)]);
+					fprintf(stdout, "%s\n", registerName[getRt(ir)]);
+					break;
+				}
+				case 37: { 	// OR -- Bitwise or, Description: Bitwise logical ors two registers and stores the result in a register
+							// Syntax: or $d, $s, $t
+							// 0000 00ss ssst tttt dddd d000 0010 0101
+					fprintf(stdout, "or ");
+					fprintf(stdout, "%s, ", registerName[getRd(ir)]);
+					fprintf(stdout, "%s, ", registerName[getRs(ir)]);
+					fprintf(stdout, "%s\n", registerName[getRt(ir)]);
+					break;
+				}
+				case 43: { 	// SLTU -- Set on less than unsigned, Description: If $s is less than $t, $d is set to one. It gets zero otherwise.
+							// Syntax: sltu $d, $s, $t
+							// 0000 00ss ssst tttt dddd d000 0010 1011
+					fprintf(stdout, "sltu ");
 					fprintf(stdout, "%s, ", registerName[getRd(ir)]);
 					fprintf(stdout, "%s, ", registerName[getRs(ir)]);
 					fprintf(stdout, "%s\n", registerName[getRt(ir)]);
