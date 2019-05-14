@@ -156,6 +156,15 @@ void decodificar(unsigned int ir) {
 					}
 					break;
 				}
+				case 2:	{	// SRL -- Shift right logical
+							// Syntax: srl $d, $t, h
+							// Encoding: 0000 00-- ---t tttt dddd dhhh hh00 0010
+					fprintf(stdout, "srl ");
+					fprintf(stdout, "%s, ", registerName[getRd(ir)]);
+					fprintf(stdout, "%s, ", registerName[getRt(ir)]);
+					fprintf(stdout, "%d\n", getShamt(ir));
+					break;
+				}
 				case 8: { 	// JR -- Jump register, Description: Jump to the address contained in register $s 
 							// Syntax: jr $s
 							// 0000 00ss sss0 0000 0000 0000 0000 1000
@@ -196,10 +205,31 @@ void decodificar(unsigned int ir) {
 					fprintf(stdout, "%s\n", registerName[getRt(ir)]);
 					break;
 				}
+				case 36: { // 100100 -> and, R-Type.
+					fprintf(stdout, "and ");
+					fprintf(stdout, "%s, ", registerName[getRd(ir)]);
+					fprintf(stdout, "%s, ", registerName[getRs(ir)]);
+					fprintf(stdout, "%s\n", registerName[getRt(ir)]);
+					break;
+				}
 				case 37: { 	// OR -- Bitwise or, Description: Bitwise logical ors two registers and stores the result in a register
 							// Syntax: or $d, $s, $t
 							// 0000 00ss ssst tttt dddd d000 0010 0101
 					fprintf(stdout, "or ");
+					fprintf(stdout, "%s, ", registerName[getRd(ir)]);
+					fprintf(stdout, "%s, ", registerName[getRs(ir)]);
+					fprintf(stdout, "%s\n", registerName[getRt(ir)]);
+					break;
+				}
+				case 39: { // 100111 -> nor, R-Type.
+					fprintf(stdout, "nor ");
+					fprintf(stdout, "%s, ", registerName[getRd(ir)]);
+					fprintf(stdout, "%s, ", registerName[getRs(ir)]);
+					fprintf(stdout, "%s\n", registerName[getRt(ir)]);
+					break;
+				}
+				case 42: { // 101010 -> slt, R-Type.
+					fprintf(stdout, "slt ");
 					fprintf(stdout, "%s, ", registerName[getRd(ir)]);
 					fprintf(stdout, "%s, ", registerName[getRs(ir)]);
 					fprintf(stdout, "%s\n", registerName[getRt(ir)]);
