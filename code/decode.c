@@ -264,6 +264,16 @@ void decodificar(unsigned int ir) {
 			break;
 		}
 
+		case 5:	{ // BNE -- Branch on not equal, Description: Branches if the two registers are not equal. 
+				  // Syntax: bne $s, $t, offset
+				  // 0001 01ss ssst tttt iiii iiii iiii iiii
+			fprintf(stdout, "bne ");
+			fprintf(stdout, "%s, ", registerName[getRs(ir)]);
+			fprintf(stdout, "%s, ", registerName[getRt(ir)]);
+			fprintf(stdout, "%#0.4x\n", getImmediate(ir));
+			break;
+		}
+
 		case 8:	{ // ADDI -- Add Immediate, Description: Adds a register and a sign-extended immediate value and stores the result in a register.
 				  // Syntax: addi $t, $s, imm
 				  // 0010 00ss ssst tttt iiii iiii iiii iiii
@@ -274,10 +284,63 @@ void decodificar(unsigned int ir) {
 			break;
 		}
 
-	
-		
+		case 9:	{ // ADDIU -- Add immediate unsigned, Description: Adds a register and a sign-extended immediate value and stores the result in a register.
+				  // Syntax: addiu $t, $s, imm
+				  // 0010 01ss ssst tttt iiii iiii iiii iiii
+			fprintf(stdout, "addiu ");
+			fprintf(stdout, "%s, ", registerName[getRs(ir)]);
+			fprintf(stdout, "%s, ", registerName[getRt(ir)]);
+			fprintf(stdout, "%#0.4x\n", getImmediate(ir));
+			break;
+		}
+
+		case 10:{ // SLTI -- Set on less than immediate, Description: If $s is less than immediate, $t is set to one. It gets zero otherwise.
+				  // Syntax: slti $t, $s, imm
+				  // 0010 10ss ssst tttt iiii iiii iiii iiii
+			fprintf(stdout, "slti ");
+			fprintf(stdout, "%s, ", registerName[getRs(ir)]);
+			fprintf(stdout, "%s, ", registerName[getRt(ir)]);
+			fprintf(stdout, "%#0.4x\n", getImmediate(ir));
+			break;
+		}
+
+		case 15: { // LUI -- Load upper immediate, Description: The immediate value is shifted left 16 bits and stored in the register. The lower 16 bits are zeroes.
+				   // Syntax: lui $t, imm
+				   // 0011 11-- ---t tttt iiii iiii iiii iiii
+			fprintf(stdout, "lui ");
+			fprintf(stdout, "%s, ", registerName[getRt(ir)]);
+			fprintf(stdout, "%#0.4x\n", getImmediate(ir));
+			break;
+		}
+
 		case 35: { // 100011 (lw), I-Type. lw rt, imm(rs)
 			fprintf(stdout, "lw ");
+			fprintf(stdout, "%s, ", registerName[getRt(ir)]);
+			fprintf(stdout, "%d", getImmediate(ir));
+			fprintf(stdout, "(%s)\n", registerName[getRs(ir)]);
+			break;
+		}
+
+		case 36: {	// 100100 (lbu), I-Type. lbu rt, imm(rs)
+			fprintf(stdout, "lbu ");
+			fprintf(stdout, "%s, ", registerName[getRt(ir)]);
+			fprintf(stdout, "%d", getImmediate(ir));
+			fprintf(stdout, "(%s)\n", registerName[getRs(ir)]);
+			break;
+		}
+
+		case 40: {	// SB -- Store byte, Description: The least significant byte of $t is stored at the specified address.
+				   // Syntax: sb $t, offset($s)
+				   // 1010 00ss ssst tttt iiii iiii iiii iiii
+			fprintf(stdout, "sb ");
+			fprintf(stdout, "%s, ", registerName[getRt(ir)]);
+			fprintf(stdout, "%d", getImmediate(ir));
+			fprintf(stdout, "(%s)\n", registerName[getRs(ir)]);
+			break;
+		}
+
+		case 41: {	// 101001 (sh), I-Type. sh rt, imm(rs)
+			fprintf(stdout, "sh ");
 			fprintf(stdout, "%s, ", registerName[getRt(ir)]);
 			fprintf(stdout, "%d", getImmediate(ir));
 			fprintf(stdout, "(%s)\n", registerName[getRs(ir)]);
