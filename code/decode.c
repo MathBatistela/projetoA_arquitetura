@@ -196,7 +196,7 @@ void decodificar(unsigned int ir) {
 					fprintf(stdout, "%s\n", registerName[getRt(ir)]);
 					break;
 				}
-				case 35: { // SUBU -- Subtract unsigned, Description: Subtracts two registers and stores the result in a register
+				case 35: { 	// SUBU -- Subtract unsigned, Description: Subtracts two registers and stores the result in a register
 							// Syntax: subu $d, $s, $t
 							// 0000 00ss ssst tttt dddd d000 0010 001
 					fprintf(stdout, "subu ");
@@ -254,6 +254,12 @@ void decodificar(unsigned int ir) {
 			break;
 		}
 
+		case 3:	{ // 000011 -> jal , J-Type
+			fprintf(stdout, "jal ");
+			fprintf(stdout, "0x%0.8X\n", getAddress(ir));
+			break;
+		}
+
 		case 4:	{ // BEQ -- Branch on equal, Description: Branches if the two registers are equal. 
 				  // Syntax: beq $s, $t, offset
 				  // 0001 00ss ssst tttt iiii iiii iiii iiii
@@ -274,13 +280,73 @@ void decodificar(unsigned int ir) {
 			break;
 		}
 
-	
+		case 12:{ // ANDI -- Bitwise and immediate, Description: Bitwise ands a register and an immediate value and stores the result in a register.
+				  // Syntax: andi $t, $s, imm
+				  // 0011 00ss ssst tttt iiii iiii iiii iiii
+			fprintf(stdout, "andi ");
+			fprintf(stdout, "%s, ", registerName[getRs(ir)]);
+			fprintf(stdout, "%s, ", registerName[getRt(ir)]);
+			fprintf(stdout, "%#0.4x\n", getImmediate(ir));
+			break;
+		}
+
+		case 11:{ // SLTIU -- Set on less than immediate unsigned, Description: If $s is less than the unsigned immediate, $t is set to one. It gets zero otherwise.
+				  // Syntax: sltiu $t, $s, imm
+				  // 0010 11ss ssst tttt iiii iiii iiii iiii
+			fprintf(stdout, "sltiu ");
+			fprintf(stdout, "%s, ", registerName[getRs(ir)]);
+			fprintf(stdout, "%s, ", registerName[getRt(ir)]);
+			fprintf(stdout, "%#0.4x\n", getImmediate(ir));
+			break;
+		}	
+
+		case 13:{ // ORI -- Bitwise or immediate, Description: Bitwise ors a register and an immediate value and stores the result in a register.
+				  // Syntax: ori $t, $s, imm
+				  // 0011 01ss ssst tttt iiii iiii iiii iiii
+			fprintf(stdout, "ori ");
+			fprintf(stdout, "%s, ", registerName[getRs(ir)]);
+			fprintf(stdout, "%s, ", registerName[getRt(ir)]);
+			fprintf(stdout, "%#0.4x\n", getImmediate(ir));
+			break;
+		}	
 		
 		case 35: { // 100011 (lw), I-Type. lw rt, imm(rs)
 			fprintf(stdout, "lw ");
 			fprintf(stdout, "%s, ", registerName[getRt(ir)]);
 			fprintf(stdout, "%d", getImmediate(ir));
 			fprintf(stdout, "(%s)\n", registerName[getRs(ir)]);
+			break;
+		}
+
+		case 37: { // 100101 (lhu), I-Type. lhu rt, imm(rs)
+			fprintf(stdout, "lhu ");
+			fprintf(stdout, "%s, ", registerName[getRt(ir)]);
+			fprintf(stdout, "%d", getImmediate(ir));
+			fprintf(stdout, "(%s)\n", registerName[getRs(ir)]);
+			break;
+		}
+
+		case 43: { // 101011 (sw), I-Type. sw rt, imm(rs)
+			fprintf(stdout, "sw ");
+			fprintf(stdout, "%s, ", registerName[getRt(ir)]);
+			fprintf(stdout, "%d", getImmediate(ir));
+			fprintf(stdout, "(%s)\n", registerName[getRs(ir)]);
+			break;
+		}
+
+		case 48: { // 110000 (ll), I-Type. ll rt, imm(rs)
+			fprintf(stdout, "ll ");
+			fprintf(stdout, "%s, ", registerName[getRt(ir)]);
+			fprintf(stdout, "%d", getImmediate(ir));
+			fprintf(stdout, "(%s)\n", registerName[getRs(ir)]);
+			break;
+		}
+
+		case 56:{ //  111000 (sc), I-Type. sc rt, imm(rs)
+			fprintf(stdout, "sc ");
+			fprintf(stdout, "%s, ", registerName[getRs(ir)]);
+			fprintf(stdout, "%s, ", registerName[getRt(ir)]);
+			fprintf(stdout, "%#0.4x\n", getImmediate(ir));
 			break;
 		}
 
