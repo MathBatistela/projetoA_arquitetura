@@ -169,7 +169,7 @@ void decodificar(unsigned int ir) {
 							// Syntax: jr $s
 							// 0000 00ss sss0 0000 0000 0000 0000 1000
 					fprintf(stdout, "jr ");
-					fprintf(stdout, "%s, ", registerName[getRs(ir)]);
+					fprintf(stdout, "%s\n", registerName[getRs(ir)]);
 					break;
 				}
 				case 32: { // 100000 -> add, R-Type.
